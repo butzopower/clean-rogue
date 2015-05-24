@@ -1,4 +1,5 @@
 require "clean_rogue"
+require "clean_rogue/utils/direction"
 require "clean_rogue/values/player"
 require "clean_rogue/values/room"
 require "clean_rogue_test_support/doubles/gui_spy"
@@ -18,7 +19,7 @@ end
 
 When(/^I move right$/) do
   CleanRogue.move_player(
-      direction: [1,0],
+      direction: Direction.E,
       room: @room,
       player: @player,
       observer: gui_spy
