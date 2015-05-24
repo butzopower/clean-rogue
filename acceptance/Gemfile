@@ -1,0 +1,6 @@
+source "https://rubygems.org"
+
+gem "cucumber"
+gem "rspec"
+
+gem "clean_rogue", path: "../clean_rogue"

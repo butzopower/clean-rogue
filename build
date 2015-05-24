@@ -1,0 +1,2 @@
+pushd acceptance; bundle exec cucumber; popd
+pushd clean_rogue;  bundle exec rspec --color --format=doc; popd
