@@ -17,7 +17,7 @@ class Runner
 
   def draw
     presented_room = @room_presenter.present_room(@room)
-    @screen.draw(presented_room)
+    @screen.draw(presented_room, [], @player.position.reverse)
   end
 
   def room_updated(room)
