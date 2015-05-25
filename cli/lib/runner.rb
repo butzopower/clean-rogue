@@ -8,8 +8,9 @@ class Runner
   def initialize(screen)
     @screen = screen
     @player = CleanRogue::Values::Player.new(position: [2,2])
-    @room = CleanRogue::Values::Room.new(width: 5, height: 5, player: @player)
+    @room = CleanRogue::Values::Room.new(width: 15, height: 5, player: @player)
     @room_presenter = RoomPresenter.new
+    @failure_message = ""
   end
 
   def move_player(direction)
@@ -18,12 +19,19 @@ class Runner
 
   def draw
     presented_room = @room_presenter.present_room(@room)
-    @screen.draw(presented_room, [], @player.position.reverse)
+    frame = "#{presented_room}\n\n#{@failure_message}"
+    @screen.draw(frame, [], @player.position.reverse)
   end
 
   def room_updated(room)
     @room = room
     @player = room.player
+    @failure_message = ""
+    draw
+  end
+
+  def action_failed(failure_message)
+    @failure_message = failure_message
     draw
   end
 end
