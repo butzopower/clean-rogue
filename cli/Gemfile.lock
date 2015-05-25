@@ -1,0 +1,18 @@
+PATH
+  remote: ../clean_rogue
+  specs:
+    clean_rogue (0.0.1)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    curses (1.0.1)
+    dispel (0.0.7)
+      curses
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  clean_rogue!
+  dispel

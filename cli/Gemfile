@@ -1,0 +1,5 @@
+source "https://rubygems.org"
+
+gem "dispel"
+
+gem "clean_rogue", path: "../clean_rogue"
