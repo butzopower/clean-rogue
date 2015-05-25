@@ -13,7 +13,7 @@ end
 World(AcceptanceDSL)
 
 Given(/^I'm in a spacious room$/) do
-  @player = CleanRogue::Values::Player.new(position: [1,1])
+  @player = CleanRogue::Values::Player.new(position: [0,0])
   @room = CleanRogue::Values::Room.new(width: 2, height: 2, player: @player)
 end
 
@@ -28,5 +28,5 @@ end
 
 Then(/^my character should move right$/) do
   player = gui_spy.spy_updated_room.player
-  expect(player.position).to eq([2,1])
+  expect(player.position).to eq([1,0])
 end
