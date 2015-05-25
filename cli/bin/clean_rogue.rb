@@ -3,7 +3,6 @@
 $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
 
 require "dispel"
-require "room_presenter"
 require "runner"
 
 Dispel::Screen.open do |screen|

@@ -2,6 +2,7 @@ require "clean_rogue"
 require "clean_rogue/values/player"
 require "clean_rogue/values/room"
 require "clean_rogue/utils/direction"
+require "room_presenter"
 
 class Runner
   def initialize(screen)
