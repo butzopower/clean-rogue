@@ -1,6 +1,7 @@
 require "clean_rogue"
 require "clean_rogue/values/player"
 require "clean_rogue/values/room"
+require "clean_rogue/values/obstacle"
 require "clean_rogue_test_support/doubles/gui_spy"
 
 include CleanRogue
@@ -33,6 +34,21 @@ describe "moving a player in a room" do
 
       specify "then the player should receive a message the move is invalid" do
         expect(gui_spy.spy_failure_message).to eq("Cannot move outside of room")
+      end
+    end
+  end
+
+  context "given the position next to the player is occupied by an obstacle" do
+    let(:obstacle) { Values::Obstacle.new(position: [1,0]) }
+    let(:room) { Values::Room.new(width: 2, height: 2, player: player, obstacles: [obstacle]) }
+
+    describe "when I move the player towards that position" do
+      before do
+        move_right
+      end
+
+      specify "then the player should receive a message the move is invalid" do
+        expect(gui_spy.spy_failure_message).to eq("Movement blocked by obstacle")
       end
     end
   end
