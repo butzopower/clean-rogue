@@ -1,14 +1,18 @@
 require "clean_rogue"
 require "clean_rogue/values/player"
 require "clean_rogue/values/room"
+require "clean_rogue/values/obstacle"
 require "clean_rogue/utils/direction"
 require "room_presenter"
 
 class Runner
-  def initialize(screen)
+  def initialize(screen, width: 15, height: 15)
     @screen = screen
-    @player = CleanRogue::Values::Player.new(position: [2,2])
-    @room = CleanRogue::Values::Room.new(width: 15, height: 5, player: @player)
+    @player = CleanRogue::Values::Player.new(position: [width / 2, height / 2])
+
+    number_of_obstacles = (width * height) / 7
+    obstacles = Array.new(number_of_obstacles) { CleanRogue::Values::Obstacle.new(position: [rand(height), rand(width)])}
+    @room = CleanRogue::Values::Room.new(width: width, height: height, player: @player, obstacles: obstacles)
     @room_presenter = RoomPresenter.new
     @failure_message = ""
   end
