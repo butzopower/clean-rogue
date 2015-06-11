@@ -7,7 +7,7 @@ require "runner"
 
 Dispel::Screen.open do |screen|
   @runner = Runner.new(screen)
-  @runner.draw
+  @runner.start
 
   Dispel::Keyboard.output do |key|
     case key
@@ -19,6 +19,8 @@ Dispel::Screen.open do |screen|
         @runner.move_player(Direction.W)
       when :right then
         @runner.move_player(Direction.E)
+      when "r" then
+        @runner.start
       when "q" then
         break
     end
