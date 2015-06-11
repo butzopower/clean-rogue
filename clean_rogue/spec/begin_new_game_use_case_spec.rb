@@ -7,6 +7,7 @@ describe "beginning a new game" do
   let(:gui_spy) { GuiSpy.new }
   let(:room_options) { {height: 2, width: 3, number_of_obstacles: 3} }
   let(:player_options) { {start: [1, 1]} }
+  let(:seed) { rand(1000000) }
 
   context "given a set of options" do
     describe "when I begin a new game" do
@@ -29,9 +30,29 @@ describe "beginning a new game" do
     end
   end
 
+  context "when the game has been configured with a seed" do
+    let(:seed) { 12345 }
+
+    describe "when I begin a new game" do
+      before do
+        begin_new_game
+      end
+
+      it "creates the same game as if I created another game with that seed" do
+        original_room_obstacle_positions = gui_spy.new_game_room.obstacles.map(&:position)
+
+        begin_new_game
+        new_room_obstacle_positions = gui_spy.new_game_room.obstacles.map(&:position)
+
+        expect(new_room_obstacle_positions).to eq(original_room_obstacle_positions)
+      end
+    end
+  end
+
   def begin_new_game
     CleanRogue.begin_new_game(observer: gui_spy,
                               room_options: room_options,
-                              player_options: player_options).execute
+                              player_options: player_options,
+                              seed: seed).execute
   end
 end

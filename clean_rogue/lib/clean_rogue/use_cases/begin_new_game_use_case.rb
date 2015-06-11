@@ -7,10 +7,11 @@ module CleanRogue
     class BeginNewGameUseCase
       DEFAULT_ROOM_OPTIONS = {width: 10, height: 10, number_of_obstacles: 25}
 
-      def initialize(observer:, room_options:, player_options:)
+      def initialize(observer:, room_options:, player_options:, seed: Random.new_seed)
         @observer = observer
         @room_options = DEFAULT_ROOM_OPTIONS.merge(room_options)
         @player_options = player_options
+        @rng = Random.new(seed)
       end
 
       def execute
@@ -37,7 +38,7 @@ module CleanRogue
 
       def build_obstacles(number_of_obstacles, width, height)
         Array.new(number_of_obstacles) do
-          position = [rand(width), rand(height)]
+          position = [@rng.rand(width), @rng.rand(height)]
           Values::Obstacle.new(position: position)
         end
       end
