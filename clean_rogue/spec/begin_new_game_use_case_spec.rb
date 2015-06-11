@@ -5,7 +5,7 @@ include CleanRogue
 
 describe "beginning a new game" do
   let(:gui_spy) { GuiSpy.new }
-  let(:room_options) { {height: 2, width: 3} }
+  let(:room_options) { {height: 2, width: 3, number_of_obstacles: 3} }
   let(:player_options) { {start: [1, 1]} }
 
   context "given a set of options" do
@@ -17,6 +17,10 @@ describe "beginning a new game" do
       it "creates a room" do
         expect(gui_spy.new_game_room.height).to eq(2)
         expect(gui_spy.new_game_room.width).to eq(3)
+      end
+
+      it "creates obstacles in the room" do
+        expect(gui_spy.new_game_room.obstacles.size).to eq(3)
       end
 
       it "creates a player" do
