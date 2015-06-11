@@ -1,3 +1,6 @@
+require "clean_rogue/values/player"
+require "clean_rogue/values/room"
+
 module CleanRogue
   module UseCases
     class MovePlayerUseCase
