@@ -15,7 +15,7 @@ class Runner
   # commands
   def start
     player_options = { start: [@width / 2, @height / 2] }
-    room_options = { width: @width, height: @height }
+    room_options = { width: @width, height: @height, number_of_obstacles: (@width * @height / 4) }
     CleanRogue.begin_new_game(observer: self, room_options: room_options, player_options: player_options).execute
   end
 
