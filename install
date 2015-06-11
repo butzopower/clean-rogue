@@ -1,2 +1,3 @@
 pushd acceptance; bundle install; popd
 pushd clean_rogue;  bundle install; popd
+pushd cli;  bundle install; popd
