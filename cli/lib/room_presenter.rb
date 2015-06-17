@@ -13,6 +13,8 @@ class RoomPresenter
           "@"
         elsif room.obstacles.any? { |obstacle| obstacle.position == position}
           "#"
+        elsif room.items.any? { |item| item.position == position}
+          "o"
         else
           content
         end

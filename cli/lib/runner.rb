@@ -15,7 +15,7 @@ class Runner
   # commands
   def start
     player_options = { start: [@width / 2, @height / 2] }
-    room_options = { width: @width, height: @height, number_of_obstacles: (@width * @height / 4) }
+    room_options = { width: @width, height: @height, number_of_obstacles: (@width * @height / 4), number_of_items: 30 }
     CleanRogue.begin_new_game(observer: self, room_options: room_options, player_options: player_options).execute
   end
 
@@ -37,6 +37,10 @@ class Runner
     draw
   end
 
+  def items_presented(items)
+    @items_beneath_player = items
+  end
+
   def action_failed(failure_message)
     @failure_message = failure_message
     draw
@@ -45,8 +49,11 @@ class Runner
   private
 
   def draw
+    CleanRogue.present_items_beneath_player(observer: self, player: @player, room: @room).execute
+
+    item_message = "#{@items_beneath_player.length} item(s) here."
     presented_room = @room_presenter.present_room(@room)
-    frame = "#{presented_room}\n\n#{@failure_message}"
+    frame = "#{presented_room}\n\n#{item_message}\n\n#{@failure_message}"
     @screen.draw(frame, [], @player.position.reverse)
   end
 end
