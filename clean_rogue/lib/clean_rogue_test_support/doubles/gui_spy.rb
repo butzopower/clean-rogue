@@ -17,5 +17,15 @@ class GuiSpy
     @spy_failure_message = failure_message
   end
 
+  def spy_failure_message
+    @spy_failure_message
+  end
+
   attr_reader :spy_failure_message
+
+  def items_presented(items)
+    @spy_presented_items = items
+  end
+
+  attr_reader :spy_presented_items
 end

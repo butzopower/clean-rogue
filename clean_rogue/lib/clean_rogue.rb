@@ -1,5 +1,6 @@
-require "clean_rogue/use_cases/move_player_use_case"
-require "clean_rogue/use_cases/begin_new_game_use_case"
+Dir[File.join(__dir__, "clean_rogue", "use_cases", "*.rb")].each do |file|
+  require file
+end
 
 module CleanRogue
   extend self
@@ -12,5 +13,9 @@ module CleanRogue
 
   def begin_new_game(*args)
     BeginNewGameUseCase.new(*args)
+  end
+
+  def present_items_beneath_player(*args)
+    PresentItemsBeneathPlayerUseCase.new(*args)
   end
 end
