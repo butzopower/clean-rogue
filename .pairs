@@ -1,0 +1,7 @@
+pairs:
+  bb: Brian Butz; bbutz
+  kw: Kenny Wang; kwang
+
+email:
+  prefix: pair
+  domain: pivotal.io
