@@ -28,13 +28,11 @@ module CleanRogue
       private
 
       def move_out_of_bounds?(new_position)
-        new_position_x, new_position_y = new_position
-        !(new_position_x >= 0 && new_position_x < @room.width &&
-            new_position_y >= 0 && new_position_y < @room.height)
+        @room.out_of_room_bounds?(new_position)
       end
 
       def new_position_occupied(new_position)
-        @room.obstacles.any? {|obstacle| obstacle.position == new_position}
+        @room.obstacle_at? new_position
       end
 
       def move_player_to(new_position)

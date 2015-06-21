@@ -27,18 +27,22 @@ class Runner
   def new_game_began(room, player)
     @room = room
     @player = player
-    draw
+    look
   end
 
   def room_updated(room)
     @room = room
     @player = room.player
     @failure_message = ""
-    draw
+    look
   end
 
   def items_presented(items)
     @items_beneath_player = items
+  end
+
+  def vision_presented(vision)
+    @vision = vision
   end
 
   def action_failed(failure_message)
@@ -48,11 +52,16 @@ class Runner
 
   private
 
-  def draw
+  def look
+    CleanRogue.present_room_to_player(observer: self, player: @player, room: @room).execute
     CleanRogue.present_items_beneath_player(observer: self, player: @player, room: @room).execute
 
+    draw
+  end
+
+  def draw
     item_message = "#{@items_beneath_player.length} item(s) here."
-    presented_room = @room_presenter.present_room(@room)
+    presented_room = @room_presenter.present_room(@room, @vision)
     frame = "#{presented_room}\n\n#{item_message}\n\n#{@failure_message}"
     @screen.draw(frame, [], @player.position.reverse)
   end

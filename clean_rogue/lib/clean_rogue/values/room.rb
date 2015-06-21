@@ -16,6 +16,15 @@ module CleanRogue
       end
 
       attr_reader *ATTRIBUTES
+
+      def out_of_room_bounds?(position)
+        !(position[0] >= 0 && position[0] < width &&
+            position[1] >= 0 && position[1] < height)
+      end
+
+      def obstacle_at?(position)
+        obstacles.any? {|obstacle| obstacle.position == position}
+      end
     end
   end
 end

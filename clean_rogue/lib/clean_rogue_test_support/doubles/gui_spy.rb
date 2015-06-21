@@ -28,4 +28,10 @@ class GuiSpy
   end
 
   attr_reader :spy_presented_items
+
+  def vision_presented(vision)
+    @spy_presented_vision = vision
+  end
+
+  attr_reader :spy_presented_vision
 end

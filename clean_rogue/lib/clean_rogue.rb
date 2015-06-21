@@ -18,4 +18,8 @@ module CleanRogue
   def present_items_beneath_player(*args)
     PresentItemsBeneathPlayerUseCase.new(*args)
   end
+
+  def present_room_to_player(*args)
+    PresentRoomToPlayerUseCase.new(*args)
+  end
 end
