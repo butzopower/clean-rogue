@@ -12,6 +12,7 @@ describe "moving a player in a room" do
 
   context "given the position next to the player is free" do
     let(:room) { Values::Room.new(width: 2, height: 2, player: player) }
+    let!(:player_health) {player.health}
 
     describe "when I move the player towards that position" do
       before do
@@ -20,6 +21,25 @@ describe "moving a player in a room" do
 
       specify "then the player's character should move to that position" do
         expect(gui_spy.spy_updated_room.player.position).to eq([1,0])
+      end
+
+      specify "then the player's health decreases by 1" do
+        expect(gui_spy.spy_updated_room.player.health).to eq(player_health - 1)
+      end
+    end
+  end
+
+  context "given the player is at 0 health" do
+    let(:deadplayer) { Values::Player.new(position:[0,0], health: 0)}
+    let(:room) { Values::Room.new(width: 2, height: 2, player: deadplayer) }
+
+    describe "when I try to move" do
+      before do
+        move_right
+      end
+
+      specify "then I shouldnt move" do
+        expect(gui_spy.spy_updated_room.player.position).to eq([0,0])
       end
     end
   end

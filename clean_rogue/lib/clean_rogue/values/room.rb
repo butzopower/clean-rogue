@@ -25,6 +25,15 @@ module CleanRogue
       def obstacle_at?(position)
         obstacles.any? {|obstacle| obstacle.position == position}
       end
+
+      def remove_item(item)
+        @items.delete(item)
+      end
+
+      def add_item(item)
+        item.position = @player.position
+        @items << item
+      end
     end
   end
 end

@@ -36,9 +36,10 @@ module CleanRogue
       end
 
       def move_player_to(new_position)
-        updated_player = Values::Player.new(position: new_position)
-        updated_room = Values::Room.new(@room.attributes.merge(player: updated_player))
-        @observer.room_updated(updated_room)
+        @player.move(new_position)
+        # updated_player = Values::Player.new(position: new_position, items: @player.items, health: @player.health - 1)
+        # updated_room = Values::Room.new(@room.attributes.merge(player: updated_player))
+        @observer.room_updated(@room)
       end
     end
   end

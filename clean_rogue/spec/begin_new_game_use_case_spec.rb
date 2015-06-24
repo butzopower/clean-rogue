@@ -31,6 +31,14 @@ describe "beginning a new game" do
       it "creates items in the room" do
         expect(gui_spy.new_game_room.items.size).to eq(2)
       end
+
+      it "doesnt create items on walls" do
+        room = gui_spy.new_game_room
+        room.items.each do |item|
+          expect(room.obstacle_at?(item.position)).to be false
+        end
+      end
+
     end
   end
 

@@ -22,4 +22,12 @@ module CleanRogue
   def present_room_to_player(*args)
     PresentRoomToPlayerUseCase.new(*args)
   end
+
+  def pick_up_items_beneath_player(*args)
+    PickUpItemsBeneathPlayerUseCase.new(*args)
+  end
+
+  def drop_item(*args)
+    DropItemUseCase.new(*args)
+  end
 end

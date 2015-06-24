@@ -5,7 +5,11 @@ module CleanRogue
         @position = position
       end
 
-      attr_reader :position
+      attr_accessor :position
+
+      def toString()
+        position.to_s + "\n"
+      end
     end
   end
 end

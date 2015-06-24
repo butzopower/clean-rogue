@@ -27,7 +27,11 @@ class GuiSpy
     @spy_presented_items = items
   end
 
-  attr_reader :spy_presented_items
+  def player_items(player)
+    @spy_player_items = player.items
+  end
+
+  attr_reader :spy_presented_items, :spy_player_items
 
   def vision_presented(vision)
     @spy_presented_vision = vision
