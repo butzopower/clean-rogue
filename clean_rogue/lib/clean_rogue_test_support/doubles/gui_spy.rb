@@ -5,14 +5,6 @@ class GuiSpy
 
   attr_reader :spy_updated_room
 
-  def new_game_began(room, player)
-    @new_game_room = room
-    @new_game_player = player
-  end
-
-  attr_reader :new_game_room
-  attr_reader :new_game_player
-
   def action_failed(failure_message)
     @spy_failure_message = failure_message
   end
@@ -34,4 +26,15 @@ class GuiSpy
   end
 
   attr_reader :spy_presented_vision
+
+  def new_game_began(game_id)
+    @new_game_id = game_id
+  end
+
+  attr_reader :new_game_id
+
+  def game_presented(game)
+    @presented_game = game
+  end
+  attr_reader :presented_game
 end

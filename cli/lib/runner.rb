@@ -1,12 +1,14 @@
 require "clean_rogue"
 require "clean_rogue/values/obstacle"
 require "clean_rogue/utils/direction"
+require "clean_rogue_test_support/doubles/fake_game_repo"
 require "room_presenter"
 
 class Runner
   def initialize(screen, width: 15, height: 15)
     @screen = screen
     @room_presenter = RoomPresenter.new
+    @game_repo = FakeGameRepo.new
     @failure_message = ""
     @width = width
     @height = height
@@ -16,7 +18,7 @@ class Runner
   def start
     player_options = { start: [@width / 2, @height / 2] }
     room_options = { width: @width, height: @height, number_of_obstacles: (@width * @height / 4), number_of_items: 30 }
-    CleanRogue.begin_new_game(observer: self, room_options: room_options, player_options: player_options).execute
+    CleanRogue.begin_new_game(observer: self, game_repo: @game_repo, room_options: room_options, player_options: player_options).execute
   end
 
   def move_player(direction)
@@ -24,9 +26,14 @@ class Runner
   end
 
   # callbacks
-  def new_game_began(room, player)
-    @room = room
-    @player = player
+  def new_game_began(game_id)
+    @game_id = game_id
+    CleanRogue.present_game(observer: self, game_repo: @game_repo, game_id: @game_id).execute
+  end
+
+  def game_presented(game)
+    @room = game.room
+    @player = game.player
     look
   end
 

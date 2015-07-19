@@ -22,4 +22,8 @@ module CleanRogue
   def present_room_to_player(*args)
     PresentRoomToPlayerUseCase.new(*args)
   end
+
+  def present_game(*args)
+    PresentGameUseCase.new(*args)
+  end
 end

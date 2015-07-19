@@ -2,14 +2,16 @@ require "clean_rogue/values/room"
 require "clean_rogue/values/player"
 require "clean_rogue/values/obstacle"
 require "clean_rogue/values/item"
+require "clean_rogue/entities/game"
 
 module CleanRogue
   module UseCases
     class BeginNewGameUseCase
       DEFAULT_ROOM_OPTIONS = {width: 10, height: 10, number_of_obstacles: 25, number_of_items: 5}
 
-      def initialize(observer:, room_options:, player_options:, seed: Random.new_seed)
+      def initialize(observer:, game_repo:, room_options:, player_options:, seed: Random.new_seed)
         @observer = observer
+        @game_repo = game_repo
         @room_options = DEFAULT_ROOM_OPTIONS.merge(room_options)
         @player_options = player_options
         @rng = Random.new(seed)
@@ -29,7 +31,10 @@ module CleanRogue
 
         room = build_room(@room_options[:width], @room_options[:height], player, obstacles, items)
 
-        @observer.new_game_began(room, player)
+        game = Entities::Game.new(room: room, player: player)
+        @game_repo.save(game)
+
+        @observer.new_game_began(game.id)
       end
 
       private
