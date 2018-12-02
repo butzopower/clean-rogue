@@ -6,8 +6,8 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
-    curses (1.0.1)
-    dispel (0.0.7)
+    curses (1.2.5)
+    dispel (0.1.0)
       curses
 
 PLATFORMS
@@ -16,3 +16,6 @@ PLATFORMS
 DEPENDENCIES
   clean_rogue!
   dispel
+
+BUNDLED WITH
+   1.17.1
