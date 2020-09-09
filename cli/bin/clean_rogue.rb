@@ -4,39 +4,64 @@ $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
 
 require "dispel"
 require "runner"
+require "screen"
+require "views/title"
+require "controllers/keyboard_controller"
+require "controllers/standard_key_map"
+require "controllers/vim_key_map"
 
-KEY_PAD_TO_DIRECTIONS = {
-    "1" => Direction.SW,
-    "2" => Direction.S,
-    "3" => Direction.SE,
-    "4" => Direction.W,
-    "5" => Direction.WAIT,
-    "6" => Direction.E,
-    "7" => Direction.NW,
-    "8" => Direction.N,
-    "9" => Direction.NE
-}
+Dispel::Screen.open do |dispel_screen|
+  screen = Screen.new(dispel_screen)
+  controller = Controllers::KeyboardController.new(Controllers::StandardKeyMap)
 
-Dispel::Screen.open do |screen|
-  @runner = Runner.new(screen)
+  @choice = :standard
+
+  screen.present Views::Title.new(@choice)
+
+  controller.await_input do |input|
+    case input
+    when :toggle
+      if @choice == :standard
+        @choice = :vim
+        controller = Controllers::KeyboardController.new(Controllers::VimKeyMap)
+      else
+        @choice = :standard
+        controller = Controllers::KeyboardController.new(Controllers::StandardKeyMap)
+      end
+
+      screen.present Views::Title.new(@choice)
+    when :enter
+      break
+    when :quit
+      exit
+    end
+  end
+
+  @runner = Runner.new(dispel_screen)
   @runner.start
 
-  Dispel::Keyboard.output do |key|
-    case key
-      when "1".."9" then
-        @runner.move_player(KEY_PAD_TO_DIRECTIONS[key])
-      when :up then
-        @runner.move_player(Direction.N)
-      when :down then
-        @runner.move_player(Direction.S)
-      when :left then
-        @runner.move_player(Direction.W)
-      when :right then
-        @runner.move_player(Direction.E)
-      when "r" then
-        @runner.start
-      when "q" then
-        break
+  controller.await_input do |input|
+    case input
+    when :up
+      @runner.move_player(Direction.N)
+    when :down
+      @runner.move_player(Direction.S)
+    when :left
+      @runner.move_player(Direction.W)
+    when :right
+      @runner.move_player(Direction.E)
+    when :up_left
+      @runner.move_player(Direction.NW)
+    when :up_right
+      @runner.move_player(Direction.NE)
+    when :down_left
+      @runner.move_player(Direction.SW)
+    when :down_right
+      @runner.move_player(Direction.SE)
+    when :wait
+      @runner.move_player(Direction.WAIT)
+    when :quit
+      break
     end
   end
 end
