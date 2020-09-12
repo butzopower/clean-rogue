@@ -1,6 +1,7 @@
 require "clean_rogue"
 require "clean_rogue/values/obstacle"
 require "clean_rogue/utils/direction"
+require "clean_rogue/utils/map_generators/random_map_generator"
 require "clean_rogue_test_support/doubles/fake_game_repo"
 require "room_presenter"
 
@@ -12,13 +13,19 @@ class Runner
     @failure_message = ""
     @width = width
     @height = height
+    @rng = Random.new
   end
 
   # commands
   def start
     player_options = { start: [@width / 2, @height / 2] }
-    room_options = { width: @width, height: @height, number_of_obstacles: (@width * @height / 4), number_of_items: 30 }
-    CleanRogue.begin_new_game(observer: self, game_repo: @game_repo, room_options: room_options, player_options: player_options).execute
+
+    CleanRogue.begin_new_game(
+      observer: self,
+      game_repo: @game_repo,
+      room_builder: create_room_builder,
+      player_options: player_options
+    ).execute
   end
 
   def move_player(direction)
@@ -71,5 +78,10 @@ class Runner
     presented_room = @room_presenter.present_room(@room, @vision)
     frame = "#{presented_room}\n\n#{item_message}\n\n#{@failure_message}"
     @screen.draw(frame, [], @player.position.reverse)
+  end
+
+  def create_room_builder
+    room_options = { width: @width, height: @height, number_of_obstacles: (@width * @height / 4), number_of_items: 30 }
+    CleanRogue::Utils::MapGenerators::RandomMapGenerator.new(room_options: room_options, rng: @rng)
   end
 end

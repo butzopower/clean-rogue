@@ -1,5 +1,6 @@
 require "clean_rogue"
 require "clean_rogue/utils/direction"
+require "clean_rogue/utils/map_generators/random_map_generator"
 require "clean_rogue/values/player"
 require "clean_rogue/values/room"
 require "clean_rogue_test_support/doubles/gui_spy"
@@ -39,7 +40,7 @@ World(AcceptanceDSL)
 Given(/^I'm in a tiny room with an item$/) do
   CleanRogue.begin_new_game(observer: gui_spy,
                             game_repo: fake_game_repo,
-                            room_options: {height: 1, width: 1, number_of_items: 1},
+                            room_builder: room_builder_with({height: 1, width: 1, number_of_items: 1}),
                             player_options: { start: [0, 0] }
   ).execute
 end
@@ -47,7 +48,7 @@ end
 Given(/^I'm in a spacious room$/) do
   CleanRogue.begin_new_game(observer: gui_spy,
                             game_repo: fake_game_repo,
-                            room_options: {height: 2, width: 2, number_of_obstacles: 0},
+                            room_builder: room_builder_with({height: 2, width: 2, number_of_obstacles: 0}),
                             player_options: { start: [0, 0] }
   ).execute
 end
@@ -56,9 +57,8 @@ Given(/^I'm in a room with obstacles$/) do
   seed = 5 # seed 5 will always generate an obstacle at position [1, 0]
   CleanRogue.begin_new_game(observer: gui_spy,
                             game_repo: fake_game_repo,
-                            room_options: {height: 2, width: 2, number_of_obstacles: 1},
+                            room_builder: room_builder_with({height: 2, width: 2, number_of_obstacles: 1}, seed: seed),
                             player_options: { start: [0, 0] },
-                            seed: seed
   ).execute
 end
 
@@ -96,4 +96,9 @@ end
 
 Then(/^I should see an item$/) do
   expect(gui_spy.spy_presented_items.length).to eq(1)
+end
+
+def room_builder_with(options, seed: Random.new_seed)
+  rng = Random.new(seed)
+  CleanRogue::Utils::MapGenerators::RandomMapGenerator.new(room_options: options, rng: rng)
 end
