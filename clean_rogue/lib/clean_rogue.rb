@@ -7,23 +7,23 @@ module CleanRogue
 
   include UseCases
 
-  def move_player(*args)
-    MovePlayerUseCase.new(*args)
+  def move_player(**args)
+    MovePlayerUseCase.new(**args)
   end
 
-  def begin_new_game(*args)
-    BeginNewGameUseCase.new(*args)
+  def begin_new_game(**args)
+    BeginNewGameUseCase.new(**args)
   end
 
-  def present_items_beneath_player(*args)
-    PresentItemsBeneathPlayerUseCase.new(*args)
+  def present_items_beneath_player(**args)
+    PresentItemsBeneathPlayerUseCase.new(**args)
   end
 
-  def present_room_to_player(*args)
-    PresentRoomToPlayerUseCase.new(*args)
+  def present_room_to_player(**args)
+    PresentRoomToPlayerUseCase.new(**args)
   end
 
-  def present_game(*args)
-    PresentGameUseCase.new(*args)
+  def present_game(**args)
+    PresentGameUseCase.new(**args)
   end
 end
