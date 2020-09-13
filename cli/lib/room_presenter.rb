@@ -5,21 +5,35 @@ class RoomPresenter
 
   def present_room(room, vision)
     player = room.player
-    Array.new(room.height).map.with_index do |_, row_index|
-      Array.new(room.width, @background).map.with_index do |content, column_index|
-        position = [column_index, row_index]
-        if !vision.visible?(position)
-          " "
-        elsif player.position == position
-          "@"
-        elsif room.obstacles.any? { |obstacle| obstacle.position == position}
-          "#"
-        elsif room.items.any? { |item| item.position == position}
-          "o"
-        else
-          content
-        end
-      end.join
-    end.join("\n")
+    height = room.height
+    width = room.width
+
+    tiles =  build_positions(height, width).map do |position|
+      if !vision.visible?(position)
+        " "
+      elsif player.position == position
+        "@"
+      elsif room.obstacles.any? { |obstacle| obstacle.position == position}
+        "#"
+      elsif room.items.any? { |item| item.position == position}
+        "o"
+      else
+        @background
+      end
+    end
+
+    tiles.each_slice(width)
+      .map { |row| row.join }
+      .join("\n")
+  end
+
+  private
+
+  def build_positions(height, width)
+    (0...height).to_a.flat_map do |row_index|
+      (0...width).to_a.map.with_index do |column_index|
+        [column_index, row_index]
+      end
+    end
   end
 end
