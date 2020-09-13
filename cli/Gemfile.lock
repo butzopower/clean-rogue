@@ -7,8 +7,22 @@ GEM
   remote: https://rubygems.org/
   specs:
     curses (1.2.5)
+    diff-lcs (1.4.4)
     dispel (0.1.0)
       curses
+    rspec (3.9.0)
+      rspec-core (~> 3.9.0)
+      rspec-expectations (~> 3.9.0)
+      rspec-mocks (~> 3.9.0)
+    rspec-core (3.9.2)
+      rspec-support (~> 3.9.3)
+    rspec-expectations (3.9.2)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.9.0)
+    rspec-mocks (3.9.1)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.9.0)
+    rspec-support (3.9.3)
 
 PLATFORMS
   ruby
@@ -16,6 +30,7 @@ PLATFORMS
 DEPENDENCIES
   clean_rogue!
   dispel
+  rspec
 
 BUNDLED WITH
-   1.17.1
+   1.17.3
