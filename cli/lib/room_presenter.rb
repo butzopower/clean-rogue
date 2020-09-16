@@ -55,7 +55,7 @@ class RoomPresenter
 
   class EntranceTile < Tile
     def satisfies?(position:, room:, **_)
-      room.entrance.position == position
+      !room.entrance.nil? && room.entrance.position == position
     end
   end
 

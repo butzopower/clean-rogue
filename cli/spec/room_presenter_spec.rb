@@ -136,6 +136,21 @@ describe 'presenting a room' do
     end
   end
 
+  describe 'when no entrance' do
+    it 'does not try to display one' do
+      room = CleanRogue::Values::Room.new(
+        width: 2,
+        height: 1,
+        player: CleanRogue::Values::Player.new(position: [0, 0])
+      )
+
+      vision = CleanRogue::Values::Vision.new(visible_positions: [[0, 0], [1, 0]])
+
+      display = presenter.present_room(room, vision)
+      expect(display).to eq("@.")
+    end
+  end
+
   def all_positions_for(height, width)
     (0...height).to_a.product((0...width).to_a)
   end
