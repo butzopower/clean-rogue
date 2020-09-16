@@ -32,6 +32,7 @@ class RoomPresenter
     [
       UnableToSeeTile.new(' '),
       PlayerTile.new('@'),
+      EntranceTile.new('<'),
       ObstacleTile.new('#'),
       ItemTitle.new('o'),
       DefaultTile.new(background)
@@ -49,6 +50,12 @@ class RoomPresenter
   class PlayerTile < Tile
     def satisfies?(position:, room:, **_)
       room.player.position == position
+    end
+  end
+
+  class EntranceTile < Tile
+    def satisfies?(position:, room:, **_)
+      room.entrance.position == position
     end
   end
 

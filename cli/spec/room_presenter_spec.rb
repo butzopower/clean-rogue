@@ -3,6 +3,7 @@ require 'clean_rogue/values/player'
 require 'clean_rogue/values/vision'
 require 'clean_rogue/values/obstacle'
 require 'clean_rogue/values/item'
+require 'clean_rogue/values/entrance'
 
 require 'room_presenter'
 
@@ -11,7 +12,6 @@ describe 'presenting a room' do
     room = CleanRogue::Values::Room.new(
       width: 5,
       height: 3,
-      entrance: nil,
       player: CleanRogue::Values::Player.new(position: [2, 1])
     )
 
@@ -28,7 +28,7 @@ describe 'presenting a room' do
       room = CleanRogue::Values::Room.new(
         width: 3,
         height: 3,
-        entrance: nil,
+
         player: CleanRogue::Values::Player.new(position: [1, 1])
       )
 
@@ -46,7 +46,7 @@ describe 'presenting a room' do
       room = CleanRogue::Values::Room.new(
         width: 3,
         height: 3,
-        entrance: nil,
+
         player: CleanRogue::Values::Player.new(position: [1, 1]),
         obstacles: [
           CleanRogue::Values::Obstacle.new(position: [0,0]),
@@ -69,7 +69,7 @@ describe 'presenting a room' do
       room = CleanRogue::Values::Room.new(
         width: 3,
         height: 3,
-        entrance: nil,
+
         player: CleanRogue::Values::Player.new(position: [1, 1]),
         items: [
           CleanRogue::Values::Item.new(position: [0,0]),
@@ -90,11 +90,43 @@ describe 'presenting a room' do
       room = CleanRogue::Values::Room.new(
         width: 1,
         height: 1,
-        entrance: nil,
+
         player: CleanRogue::Values::Player.new(position: [0, 0]),
         items: [
           CleanRogue::Values::Item.new(position: [0,0])
         ]
+      )
+
+      vision = CleanRogue::Values::Vision.new(visible_positions: [[0,0]])
+
+      display = presenter.present_room(room, vision)
+      expect(display).to eq("@")
+    end
+  end
+
+  describe 'when an entrance' do
+    it 'displays the entrance' do
+      room = CleanRogue::Values::Room.new(
+        width: 3,
+        height: 1,
+
+        player: CleanRogue::Values::Player.new(position: [2, 0]),
+        entrance: CleanRogue::Values::Entrance.new(position: [0, 0])
+      )
+
+      vision = CleanRogue::Values::Vision.new(visible_positions: [[0,0], [1,0], [2,0]])
+
+      display = presenter.present_room(room, vision)
+      expect(display).to eq("<.@")
+    end
+
+    it 'displays the player above the entrance' do
+      room = CleanRogue::Values::Room.new(
+        width: 1,
+        height: 1,
+
+        player: CleanRogue::Values::Player.new(position: [0, 0]),
+        entrance: CleanRogue::Values::Entrance.new(position: [0, 0])
       )
 
       vision = CleanRogue::Values::Vision.new(visible_positions: [[0,0]])
