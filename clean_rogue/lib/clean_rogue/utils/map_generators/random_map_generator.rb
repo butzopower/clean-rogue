@@ -11,21 +11,12 @@ module CleanRogue
         def initialize(room_options:, rng:)
           @rng = rng
           @options = DEFAULT_ROOM_OPTIONS.merge(room_options)
+          validate
         end
 
         def build_room(player)
-          height = options[:height]
-          width = options[:width]
-
-          obstacles = build_obstacles(options[:number_of_obstacles],
-                                      width,
-                                      height
-          )
-
-          items = build_items(options[:number_of_items],
-                              width,
-                              height
-          )
+          obstacles = build_obstacles
+          items = build_items
 
           Values::Room.new(
             width: width,
@@ -38,18 +29,53 @@ module CleanRogue
 
         private
 
-        def build_obstacles(number_of_obstacles, width, height)
-          Array.new(number_of_obstacles) do
-            position = [rng.rand(width), rng.rand(height)]
-            Values::Obstacle.new(position: position)
+        def build_obstacles
+          random_positions_within_bounds
+            .uniq
+            .take(number_of_obstacles)
+            .map {|position| Values::Obstacle.new(position: position) }
+            .to_a
+        end
+
+        def build_items
+          random_positions_within_bounds
+            .take(number_of_items)
+            .map {|position| Values::Item.new(position: position) }
+            .to_a
+        end
+
+        def random_positions_within_bounds
+          Enumerator.new do |positions|
+            loop do
+              positions << [rng.rand(width), rng.rand(height)]
+            end
+          end.lazy
+        end
+
+        def validate
+          if number_of_obstacles > area
+            raise "More obstacles than can fit inside room"
           end
         end
 
-        def build_items(number_of_items, width, height)
-          Array.new(number_of_items) do
-            position = [rng.rand(width), rng.rand(height)]
-            Values::Item.new(position: position)
-          end
+        def width
+          options[:width]
+        end
+
+        def height
+          options[:height]
+        end
+
+        def area
+          width * height
+        end
+
+        def number_of_obstacles
+          options[:number_of_obstacles]
+        end
+
+        def number_of_items
+          options[:number_of_items]
         end
 
         attr_reader :rng, :options

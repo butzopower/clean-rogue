@@ -25,6 +25,14 @@ describe "generating a completely random map" do
     expect(room.items.size).to eq(number_of_items)
   end
 
+  context "when there are more obstacles than can fit" do
+    let(:number_of_obstacles) { height * width + 1 }
+
+    it "throws an error" do
+      expect(-> { generate_room }).to raise_exception
+    end
+  end
+
   context "when the game has been configured with a seed" do
     let(:seed) { 12345 }
 

@@ -40,7 +40,7 @@ World(AcceptanceDSL)
 Given(/^I'm in a tiny room with an item$/) do
   CleanRogue.begin_new_game(observer: gui_spy,
                             game_repo: fake_game_repo,
-                            room_builder: room_builder_with({height: 1, width: 1, number_of_items: 1}),
+                            room_builder: room_builder_with({height: 1, width: 1, number_of_items: 1, number_of_obstacles: 0}),
                             player_options: { start: [0, 0] }
   ).execute
 end
