@@ -1,14 +1,15 @@
 module CleanRogue
   module Values
     class Room
-      ATTRIBUTES = [:width, :height, :player, :obstacles, :items]
+      ATTRIBUTES = [:width, :height, :player, :obstacles, :items, :entrance]
 
-      def initialize(width:, height:, player:, obstacles: [], items: [])
+      def initialize(width:, height:, player:, obstacles: [], items: [], entrance:nil)
         @width = width
         @height = height
         @player = player
         @obstacles = obstacles
         @items = items
+        @entrance = entrance
       end
 
       def attributes

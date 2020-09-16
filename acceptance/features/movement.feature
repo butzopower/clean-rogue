@@ -6,5 +6,5 @@ Feature: Movement
 
   Scenario: Bumping into stuff
     Given I'm in a room with obstacles
-    When I move right
+    When I move left
     Then my character should bump into an obstacle

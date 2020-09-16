@@ -40,25 +40,21 @@ World(AcceptanceDSL)
 Given(/^I'm in a tiny room with an item$/) do
   CleanRogue.begin_new_game(observer: gui_spy,
                             game_repo: fake_game_repo,
-                            room_builder: room_builder_with({height: 1, width: 1, number_of_items: 1, number_of_obstacles: 0}),
-                            player_options: { start: [0, 0] }
+                            room_builder: room_builder_with({height: 1, width: 2, number_of_items: 1, number_of_obstacles: 0})
   ).execute
 end
 
 Given(/^I'm in a spacious room$/) do
   CleanRogue.begin_new_game(observer: gui_spy,
                             game_repo: fake_game_repo,
-                            room_builder: room_builder_with({height: 2, width: 2, number_of_obstacles: 0}),
-                            player_options: { start: [0, 0] }
+                            room_builder: room_builder_with({height: 3, width: 3, number_of_obstacles: 0})
   ).execute
 end
 
 Given(/^I'm in a room with obstacles$/) do
-  seed = 5 # seed 5 will always generate an obstacle at position [1, 0]
   CleanRogue.begin_new_game(observer: gui_spy,
                             game_repo: fake_game_repo,
-                            room_builder: room_builder_with({height: 2, width: 2, number_of_obstacles: 1}, seed: seed),
-                            player_options: { start: [0, 0] },
+                            room_builder: room_builder_with({height: 1, width: 2, number_of_obstacles: 1})
   ).execute
 end
 
@@ -73,20 +69,31 @@ When(/^I move right$/) do
   ).execute
 end
 
+When(/^I move left$/) do
+  present_game
+
+  CleanRogue.move_player(
+    direction: Direction.W,
+    room: presented_room,
+    player: presented_player,
+    observer: gui_spy
+  ).execute
+end
+
 When(/^I look at the floor$/) do
   present_game
   
   CleanRogue.present_items_beneath_player(
       observer: gui_spy,
-      room: presented_room,
-      player: presented_player
+      room: gui_spy.spy_updated_room,
+      player: gui_spy.spy_updated_room.player
   ).execute
 end
 
 
 Then(/^my character should move right$/) do
   player = gui_spy.spy_updated_room.player
-  expect(player.position).to eq([1, 0])
+  expect(player.position).to eq([2, 1])
 end
 
 Then(/^my character should bump into an obstacle$/) do

@@ -7,16 +7,16 @@ require "clean_rogue/entities/game"
 module CleanRogue
   module UseCases
     class BeginNewGameUseCase
-      def initialize(observer:, game_repo:, player_options:, room_builder:)
+      def initialize(observer:, game_repo:, room_builder:)
         @observer = observer
         @game_repo = game_repo
         @room_builder = room_builder
-        @player_options = player_options
       end
 
       def execute
-        player = build_player(@player_options[:start])
-        room = @room_builder.build_room(player)
+        room_without_player = @room_builder.build_room
+        player = build_player(room_without_player.entrance)
+        room = room_without_player.with_player(player)
 
         game = Entities::Game.new(room: room, player: player)
         @game_repo.save(game)
@@ -26,8 +26,8 @@ module CleanRogue
 
       private
 
-      def build_player(start)
-        Values::Player.new(position: start)
+      def build_player(entrance)
+        Values::Player.new(position: entrance.position)
       end
     end
   end

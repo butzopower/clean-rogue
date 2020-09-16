@@ -2,10 +2,10 @@ require 'clean_rogue/utils/map_generators/random_map_generator'
 require 'clean_rogue/values/player'
 
 describe "generating a completely random map" do
-  let(:height) { 2 }
+  let(:height) { 5 }
   let(:width) { 3 }
-  let(:number_of_obstacles) { 3 }
-  let(:number_of_items) { 2 }
+  let(:number_of_obstacles) { 5 }
+  let(:number_of_items) { 4 }
   let(:room_options) { {height: height, width: width, number_of_obstacles: number_of_obstacles, number_of_items: number_of_items }}
   let(:seed) { rand(1000000) }
 
@@ -23,6 +23,22 @@ describe "generating a completely random map" do
   it "builds the room with the configured items" do
     room = generate_room
     expect(room.items.size).to eq(number_of_items)
+  end
+
+  it "builds the room with an entrance in the middle with no item or obstacle" do
+    10.times do
+      center = [width / 2, height / 2]
+      room = generate_room
+
+      expect(room.entrance.position).to eq(center)
+      expect(room.obstacles.map(&:position)).to_not include(center)
+      expect(room.items.map(&:position)).to_not include(center)
+    end
+  end
+
+  it "builds the room without the player in it" do
+    room = generate_room
+    expect(room.player).to be_nil
   end
 
   context "when there are more obstacles than can fit" do
@@ -48,12 +64,11 @@ describe "generating a completely random map" do
 
   def generate_room
     rng = Random.new(seed)
-    player = CleanRogue::Values::Player.new(position: [0,0])
 
     CleanRogue::Utils::MapGenerators::RandomMapGenerator.new(
       room_options: room_options,
       rng: rng
-    ).build_room(player)
+    ).build_room
   end
 end
 

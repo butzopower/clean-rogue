@@ -1,6 +1,7 @@
 require 'clean_rogue/values/obstacle'
 require 'clean_rogue/values/item'
 require 'clean_rogue/values/room'
+require 'clean_rogue/values/entrance'
 
 module CleanRogue
   module Utils
@@ -14,16 +15,18 @@ module CleanRogue
           validate
         end
 
-        def build_room(player)
+        def build_room
           obstacles = build_obstacles
           items = build_items
+          entrance = build_entrance
 
           Values::Room.new(
             width: width,
             height: height,
-            player: player,
+            player: nil,
             obstacles: obstacles,
-            items: items
+            items: items,
+            entrance: entrance
           )
         end
 
@@ -31,17 +34,21 @@ module CleanRogue
 
         def build_obstacles
           random_positions_within_bounds
+            .reject { |position| position == center }
             .uniq
-            .take(number_of_obstacles)
             .map {|position| Values::Obstacle.new(position: position) }
-            .to_a
+            .first(number_of_obstacles)
         end
 
         def build_items
           random_positions_within_bounds
-            .take(number_of_items)
+            .reject { |position| position == center }
             .map {|position| Values::Item.new(position: position) }
-            .to_a
+            .first(number_of_items)
+        end
+
+        def build_entrance
+          Values::Entrance.new(position: center)
         end
 
         def random_positions_within_bounds
@@ -68,6 +75,10 @@ module CleanRogue
 
         def area
           width * height
+        end
+
+        def center
+          [width / 2, height / 2]
         end
 
         def number_of_obstacles

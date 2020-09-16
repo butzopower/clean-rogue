@@ -18,13 +18,10 @@ class Runner
 
   # commands
   def start
-    player_options = { start: [@width / 2, @height / 2] }
-
     CleanRogue.begin_new_game(
       observer: self,
       game_repo: @game_repo,
-      room_builder: create_room_builder,
-      player_options: player_options
+      room_builder: create_room_builder
     ).execute
   end
 

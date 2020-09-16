@@ -5,9 +5,9 @@ require "clean_rogue_test_support/doubles/fake_room_builder"
 
 describe "beginning a new game" do
   let(:gui_spy) { GuiSpy.new }
-  let(:player_options) { {start: [1, 1]} }
+  let(:start_position) { [1,1] }
   let(:fake_game_repo) { FakeGameRepo.new }
-  let(:fake_room_builder) { FakeRoomBuilder.new }
+  let(:fake_room_builder) { FakeRoomBuilder.new(start_position) }
 
   describe "when I begin a new game" do
     before do
@@ -16,21 +16,20 @@ describe "beginning a new game" do
     end
 
     it "creates a room using the room builder" do
-      expect(presented_room).to eq(built_room)
+      expect(presented_room.height).to eq(built_room.height)
+      expect(presented_room.width).to eq(built_room.width)
+      expect(presented_room.obstacles).to eq(built_room.obstacles)
+      expect(presented_room.items).to eq(built_room.items)
+      expect(presented_room.entrance).to eq(built_room.entrance)
     end
 
-    it "creates the room with the player" do
-      expect(player_room_built_with).to eq(presented_player)
-    end
-
-    it "creates a player" do
-      expect(presented_player.position).to eq([1, 1])
+    it "creates the player at the position of the entrance" do
+      expect(presented_player.position).to eq(start_position)
     end
   end
 
   def begin_new_game
     CleanRogue.begin_new_game(observer: gui_spy,
-                              player_options: player_options,
                               room_builder: fake_room_builder,
                               game_repo: fake_game_repo,
                               ).execute
@@ -49,10 +48,6 @@ describe "beginning a new game" do
 
   def presented_player
     gui_spy.presented_game.player
-  end
-
-  def player_room_built_with
-    fake_room_builder.built_with_player
   end
 
   def built_room

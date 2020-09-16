@@ -11,6 +11,7 @@ describe 'presenting a room' do
     room = CleanRogue::Values::Room.new(
       width: 5,
       height: 3,
+      entrance: nil,
       player: CleanRogue::Values::Player.new(position: [2, 1])
     )
 
@@ -27,6 +28,7 @@ describe 'presenting a room' do
       room = CleanRogue::Values::Room.new(
         width: 3,
         height: 3,
+        entrance: nil,
         player: CleanRogue::Values::Player.new(position: [1, 1])
       )
 
@@ -44,6 +46,7 @@ describe 'presenting a room' do
       room = CleanRogue::Values::Room.new(
         width: 3,
         height: 3,
+        entrance: nil,
         player: CleanRogue::Values::Player.new(position: [1, 1]),
         obstacles: [
           CleanRogue::Values::Obstacle.new(position: [0,0]),
@@ -66,6 +69,7 @@ describe 'presenting a room' do
       room = CleanRogue::Values::Room.new(
         width: 3,
         height: 3,
+        entrance: nil,
         player: CleanRogue::Values::Player.new(position: [1, 1]),
         items: [
           CleanRogue::Values::Item.new(position: [0,0]),
@@ -86,6 +90,7 @@ describe 'presenting a room' do
       room = CleanRogue::Values::Room.new(
         width: 1,
         height: 1,
+        entrance: nil,
         player: CleanRogue::Values::Player.new(position: [0, 0]),
         items: [
           CleanRogue::Values::Item.new(position: [0,0])
