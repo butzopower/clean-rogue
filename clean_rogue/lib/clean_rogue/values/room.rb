@@ -15,6 +15,10 @@ module CleanRogue
         Hash[ATTRIBUTES.map {|attribute| [attribute, public_send(attribute)]}]
       end
 
+      def with_player(player)
+        Values::Room.new(attributes.merge(player: player))
+      end
+
       attr_reader *ATTRIBUTES
 
       def out_of_room_bounds?(position)
