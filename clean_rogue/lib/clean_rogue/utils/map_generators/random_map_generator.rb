@@ -33,11 +33,11 @@ module CleanRogue
         private
 
         def build_obstacles
-          random_positions_within_bounds
+          all_positions
+            .shuffle(random: rng)
             .reject { |position| position == center }
-            .uniq
-            .map {|position| Values::Obstacle.new(position: position) }
             .first(number_of_obstacles)
+            .map {|position| Values::Obstacle.new(position: position) }
         end
 
         def build_items
@@ -54,9 +54,13 @@ module CleanRogue
         def random_positions_within_bounds
           Enumerator.new do |positions|
             loop do
-              positions << [rng.rand(width), rng.rand(height)]
+              positions << all_positions.sample(random: rng)
             end
           end.lazy
+        end
+
+        def all_positions
+          @all_positions ||= (0...width).to_a.product((0...height).to_a)
         end
 
         def validate
