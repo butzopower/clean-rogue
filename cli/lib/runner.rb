@@ -2,11 +2,12 @@ require "clean_rogue"
 require "clean_rogue/values/obstacle"
 require "clean_rogue/utils/direction"
 require "clean_rogue/utils/map_generators/random_map_generator"
+require "clean_rogue/utils/map_generators/cave_map_generator"
 require "clean_rogue_test_support/doubles/fake_game_repo"
 require "room_presenter"
 
 class Runner
-  def initialize(screen, width: 15, height: 15)
+  def initialize(screen, width: 30, height: 15)
     @screen = screen
     @room_presenter = RoomPresenter.new
     @game_repo = FakeGameRepo.new
@@ -77,8 +78,18 @@ class Runner
     @screen.draw(frame, [], @player.position.reverse)
   end
 
+  # def create_room_builder
+  #   room_options = { width: @width, height: @height, number_of_obstacles: (@width * @height / 4), number_of_items: 30 }
+  #   CleanRogue::Utils::MapGenerators::RandomMapGenerator.new(room_options: room_options, rng: @rng)
+  # end
+
   def create_room_builder
-    room_options = { width: @width, height: @height, number_of_obstacles: (@width * @height / 4), number_of_items: 30 }
-    CleanRogue::Utils::MapGenerators::RandomMapGenerator.new(room_options: room_options, rng: @rng)
+    room_options = {
+        width: @width,
+        height: @height,
+        initial_obstacles: (@width * @height * 48 / 100),
+        number_of_items: 30
+    }
+    CleanRogue::Utils::MapGenerators::CaveMapGenerator.new(room_options: room_options, rng: @rng)
   end
 end
